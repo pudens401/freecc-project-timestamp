@@ -29,7 +29,7 @@ app.get("/api/:time",(req,res)=>{
   let arr = time.split("-");
   console.log(arr[0]==time)
   if(arr[0].length==time.length){
-    const utcTime = new Date(time).toUTCString();
+    const utcTime = new Date(Number(time)).toUTCString();
     return res.json({"unix":time,"utc":utcTime})
   }else{
     const newArr = []
