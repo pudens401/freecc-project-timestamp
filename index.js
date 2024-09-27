@@ -24,26 +24,25 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/:date",(req,res)=>{
-  const {date} = req.params
-  if(!date){
+
+app.get("/api",(req,res)=>{
     let t = Date.now()
     let tUTC = new Date(Number(t)).toUTCString()
     return res.json({"unix":Number(t),"utc":tUTC})
-  }
+})
+
+app.get("/api/:date",(req,res)=>{
+  const {date} = req.params
   let arr = date.split("-");
   console.log(arr[0]==date)
   if(arr[0].length==date.length){
     const utcTime = new Date(Number(date)).toUTCString();
-    if(utcTime=='Invalid date') return res.json({error:"Invalid Date"})
+    if(utcTime=='Invalid Date') return res.json({ error : "Invalid Date" })
     return res.json({"unix":Number(date),"utc":utcTime})
   }else{
-    const newArr = []
-    arr.forEach(el=>{
-      newArr.push(parseInt(el))
-    })
-    const utcTyme = new Date(Date.UTC(newArr[0],newArr[1]-1,newArr[2],0,0,0)).toUTCString()
-    if(utcTyme=='Invalid date') return res.json({error:"Invalid Date"})
+   // const utcTyme = new Date(Date.UTC(newArr[0],newArr[1]-1,newArr[2],0,0,0)).toUTCString()
+    const utcTyme = new Date(date).toUTCString()
+    if(utcTyme=='Invalid Date') return res.json({ error : "Invalid Date" })
     const unix = Date.parse(utcTyme);
     return res.json({"unix":Number(unix),"utc":utcTyme})
   }
